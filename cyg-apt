@@ -22,7 +22,7 @@ ABI = ''
 if 'ABI' in os.environ.keys ():
 	ABI = os.environ['ABI']
 
-root = '/cygdrive/C/cygwin'
+root = '/cygwin'
 NETREL = '/netrel'
 EXTRA = NETREL + '/extra'
 # PATCH = NETREL + '/patch'
@@ -31,8 +31,8 @@ CWD = os.getcwd ()
 
 os.environ['PATH'] = NETREL + '/bin:' + os.environ['PATH']
 
-mirror = 'ftp://ftp.jaist.ac.jp/pub/cygwin'
-mirror = 'http://ftp.jaist.ac.jp/pub/cygwin'
+mirror = 'ftp://mirrors.rcn.net/mirrors/sources.redhat.com/cygwin'
+mirror = 'http://mirrors.rcn.net/pub/sourceware/cygwin'
 
 
 downloads = root + '/var/cache/setup/' + urllib.quote (mirror, '').lower ()

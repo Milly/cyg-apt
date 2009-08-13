@@ -1,11 +1,16 @@
 #!/usr/bin/python
 
 '''
+  ---------------------------------------------------------
   cyg-apt - Cygwin installer to keep cygwin root up to date
   
   (c) 2002--2003  Jan Nieuwenhuizen <janneke@gnu.org>
   
   License: GNU GPL
+
+  ---------------------------------------------------------
+  Modyfied by snaka<snaka.gml@gmail.com>
+
 '''
 
 import __main__
@@ -22,7 +27,7 @@ ABI = ''
 if 'ABI' in os.environ.keys ():
 	ABI = os.environ['ABI']
 
-root = '/cygwin'
+root = '/cygdrive/C/cygwin'
 NETREL = '/netrel'
 EXTRA = NETREL + '/extra'
 # PATCH = NETREL + '/patch'
@@ -31,9 +36,7 @@ CWD = os.getcwd ()
 
 os.environ['PATH'] = NETREL + '/bin:' + os.environ['PATH']
 
-mirror = 'ftp://mirrors.rcn.net/mirrors/sources.redhat.com/cygwin'
-mirror = 'http://mirrors.rcn.net/pub/sourceware/cygwin'
-
+mirror = 'http://ftp.jaist.ac.jp/pub/cygwin'
 
 downloads = root + '/var/cache/setup/' + urllib.quote (mirror, '').lower ()
 
@@ -127,10 +130,15 @@ def string_to_version (s):
 	return tuple (map (try_atoi, (string.split (s, ' '))))
 
 def split_ball (p):
-	# mc-4.6.0a-20030721-1.tar.bz2
-	#m = re.match ('^([^.]*)-([0-9][^-/]*-[0-9][0-9]*)(.tar.bz2)?$', p)
-	m = re.match ('^([^.]*)-([0-9].*-[0-9][0-9]*)(.tar.bz2)?$', p)
-	return (m.group (1), string_to_version (m.group (2)))
+	# autoconf2.5-2.63-10.tar.bz2
+	#   1) autoconf2.5
+	#   2) 2.63-10
+	#   3) .tar.bz2
+	m = re.match ('^([^.]*[0-9\.]*-?\S*)-([0-9].*-[0-9][0-9]*)(.tar.bz2)?$', p)
+	try:
+		return (m.group (1), string_to_version (m.group (2)))
+	except:
+		return ("Unrecognized version for : %s" % p)
 
 def join_ball (t):
 	return t[0] + '-' + version_to_string (t[1])
@@ -660,3 +668,4 @@ get_installed ()
 
 if command and command in __main__.__dict__:
 	__main__.__dict__[command] ()
+# vim: sw=4 ts=4 noet
